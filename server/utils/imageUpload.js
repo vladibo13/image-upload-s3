@@ -13,7 +13,8 @@ const imageUpload = async (base64, description) => {
 
 	// Ensure that  POST have base64 data to your server.
 	const base64Data = new Buffer.from(base64.replace(/^data:image\/\w+;base64,/, ''), 'base64');
-	console.log('BASE 64 DATA', base64Data);
+	// console.log('BASE 64 DATA', base64Data);
+
 	// Getting the file type, ie: jpeg, png or gif
 	const type = base64.split(';')[0].split('/')[1];
 	console.log('TYPE = ', type);
@@ -41,7 +42,7 @@ const imageUpload = async (base64, description) => {
 	// Location (url) to your database and Key if needs be.
 	console.log(`Location = ${location}, ${key} = key`);
 
-	return location;
+	return { location, key };
 };
 
 module.exports = { imageUpload };

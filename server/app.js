@@ -4,11 +4,7 @@ const app = express();
 const pool = require('./db/pool');
 const imageRoutes = require('./routes/images');
 const bodyParser = require('body-parser');
-const aws = require('aws-sdk');
-const multerS3 = require('multer-s3');
-const multer = require('multer');
-const path = require('path');
-const url = require('url');
+
 // parse application
 app.use(
 	bodyParser.urlencoded({
