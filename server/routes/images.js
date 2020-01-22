@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../db/pool');
 const { imageUpload } = require('../utils/imageUpload');
 const { imageValidation } = require('../validations/imageValidation');
 const { createImage, getAllImages } = require('../utils/queryHelpers');
@@ -12,11 +11,7 @@ router.post('/newImage', imageValidation, async (req, res, next) => {
 	try {
 		const result = await imageUpload(base64Image, description);
 		const { location, key } = result;
-		const queryResult = await pool.execute(
-			'INSERT INTO `amazon_s3`.`Images` (`image`, `description`) VALUES (?,?)',
-			[ location, key ]
-		);
-		const [ query ] = queryResult;
+		const query = await createImage(location, key);
 		res.status(200).json({ msg: `success ${query.affectedRows} inserted`, amzon_s3: { location, key } });
 	} catch (ex) {
 		res.status(400).json({ msg: 'error ' + ex });
@@ -25,9 +20,8 @@ router.post('/newImage', imageValidation, async (req, res, next) => {
 
 router.get('/getImages', async (req, res, next) => {
 	try {
-		const query = await pool.execute('SELECT * FROM `amazon_s3`.`Images`');
-		const [ result ] = query;
-		res.status(200).json({ result });
+		const query = await getAllImages();
+		res.status(200).json({ images: query });
 	} catch (ex) {
 		res.status(400).json({ msg: 'error ' + ex });
 	}

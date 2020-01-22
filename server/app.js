@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const pool = require('./db/pool');
 const imageRoutes = require('./routes/images');
 const bodyParser = require('body-parser');
 
@@ -20,10 +19,9 @@ app.use(
 	})
 );
 
+//welcome route
 app.get('/', async (req, res, next) => {
-	const result = await pool.execute('select * from northwind.customers');
-	const [ first ] = result;
-	res.json(first);
+	res.json({ msg: '/api/newImage to upload and /api/getImages to get all images' });
 });
 
 app.use('/api', imageRoutes);
