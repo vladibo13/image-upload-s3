@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db/pool');
 const { imageUpload } = require('../utils/imageUpload');
+const { imageValidation } = require('../validations/imageValidation');
+const { createImage, getAllImages } = require('../utils/queryHelpers');
 
-router.post('/newImage', async (req, res, next) => {
+router.post('/newImage', imageValidation, async (req, res, next) => {
 	const { description, base64Image } = req.body;
 	if (!description || !base64Image) return res.status(400).json({ msg: 'all fields are mandatory' });
 	// console.log('base64Image = ', base64Image);

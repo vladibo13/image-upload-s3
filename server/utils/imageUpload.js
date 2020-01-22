@@ -8,16 +8,16 @@ const imageUpload = async (base64, description) => {
 	AWS.config.setPromisesDependency(require('bluebird'));
 	AWS.config.update({ accessKeyId: ACCESS_KEY, secretAccessKey: SECRET_ACCESS_KEY });
 
-	// Create an s3 instance
+	//  s3 instance
 	const s3 = new AWS.S3();
 
-	// Ensure that  POST have base64 data to your server.
+	// Ensure that  POST have base64 data to my server.
 	const base64Data = new Buffer.from(base64.replace(/^data:image\/\w+;base64,/, ''), 'base64');
 	// console.log('BASE 64 DATA', base64Data);
 
 	// Getting the file type, ie: jpeg, png or gif
 	const type = base64.split(';')[0].split('/')[1];
-	console.log('TYPE = ', type);
+	// console.log('TYPE = ', type);
 
 	//params setup to s3.upload
 	const params = {
@@ -39,7 +39,7 @@ const imageUpload = async (base64, description) => {
 		console.log(error);
 	}
 
-	// Location (url) to your database and Key if needs be.
+	// Location (url) save to my database and Key  as description if needs be.
 	console.log(`Location = ${location}, ${key} = key`);
 
 	return { location, key };
