@@ -3,6 +3,8 @@ const express = require('express');
 const app = express();
 const imageRoutes = require('./routes/images');
 const bodyParser = require('body-parser');
+const logger = require('./utils/logger');
+const { PORT } = process.env;
 
 // parse application
 app.use(
@@ -12,19 +14,10 @@ app.use(
 		extended: false
 	})
 );
-// parse application/json
-app.use(
-	bodyParser.json({
-		limit: '5mb'
-	})
-);
 
-//welcome route
-app.get('/', async (req, res, next) => {
-	res.json({ msg: '/api/newImage to upload and /api/getImages to get all images' });
-});
+app.use('/api/image', imageRoutes);
 
-app.use('/api', imageRoutes);
-app.listen(process.env.PORT, () => {
-	console.log(`server running on port ${process.env.PORT}...`);
+app.listen(PORT, () => {
+	console.log(`server running on port ${PORT}...`);
+	logger.info(`server is listening to port: ${PORT}`);
 });
